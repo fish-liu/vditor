@@ -383,6 +383,9 @@ interface IUpload {
     /** 自定义上传，当发生错误时返回错误信息 */
     handler?(files: File[]): string | null | Promise<string> | Promise<null>;
 
+    /**剪切板中包含图片地址时 的自定义上传 */
+    linkToImgHandler?(url: string): string | null | Promise<string> | Promise<null>;
+
     /** 对服务端返回的数据进行转换，以满足内置的数据结构 */
     format?(files: File[], responseText: string): string;
 

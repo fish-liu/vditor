@@ -257,4 +257,23 @@ const uploadFiles =
         xhr.send(formData);
     };
 
-export {Upload, uploadFiles};
+// 上传 连接 目标
+const uploadLinkImg =
+    (vditor: IVditor,url : string,element?: HTMLInputElement) =>{
+
+        if (vditor.options.upload.linkToImgHandler) {
+
+            const isValidate = vditor.options.upload.linkToImgHandler(url);
+            if (element) {
+                element.value = "";
+            }
+            if (typeof isValidate === "string") {
+                vditor.tip.show(isValidate);
+                return;
+            }
+            return;
+        }
+
+    };
+
+export {Upload, uploadFiles,uploadLinkImg};

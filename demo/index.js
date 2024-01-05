@@ -124,8 +124,15 @@ const initVditor = (language) => {
         upload: {
             accept: 'image/*,.mp3, .wav, .rar',
             token: 'test',
-            url: '/api/upload/editor',
+            //url: '/api/upload/editor',
+            handler(files) {
+                console.log(files)
+                return null;
+            },
             linkToImgUrl: '/api/upload/fetch',
+            linkToImgHandler(urls){
+                console.log("url=",urls)
+            },
             filename(name) {
                 return name.replace(/[^(a-zA-Z0-9\u4e00-\u9fa5\.)]/g, '').replace(/[\?\\/:|<>\*\[\]\(\)\$%\{\}@~]/g, '').replace('/\\s/g', '')
             },
@@ -133,6 +140,7 @@ const initVditor = (language) => {
     })
 }
 initVditor('zh_CN')
+console.log("za le")
 window.setLang = (language) => {
     window.vditor.destroy()
     initVditor(language)

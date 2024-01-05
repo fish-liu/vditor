@@ -2,7 +2,7 @@ import {Constants} from "../constants";
 import {input as IRInput} from "../ir/input";
 import {processAfterRender} from "../ir/process";
 import {processAfterRender as processSVAfterRender, processPaste} from "../sv/process";
-import {uploadFiles} from "../upload/index";
+import {uploadFiles,uploadLinkImg} from "../upload/index";
 import {setHeaders} from "../upload/setHeaders";
 import {afterRenderEvent} from "../wysiwyg/afterRenderEvent";
 import {input} from "../wysiwyg/input";
@@ -1289,11 +1289,17 @@ export const paste = async (vditor: IVditor, event: (ClipboardEvent | DragEvent)
         if (!entering) {
             return ["", Lute.WalkContinue];
         }
-
+        console.log(node)
         const src = node.TokensStr();
-        if (node.__internal_object__.Parent.Type === 34 && src && src.indexOf("file://") === -1 &&
-            vditor.options.upload.linkToImgUrl) {
-            const xhr = new XMLHttpRequest();
+        if (node.__internal_object__.Parent.Type === 34 && src && src.indexOf("file://") === -1 ) {
+
+            if(vditor.options.upload.linkToImgUrl || vditor.options.upload.linkToImgHandler){
+                uploadLinkImg(vditor, src);
+            }else {
+                console.log("haha")
+            }
+
+            /*const xhr = new XMLHttpRequest();
             xhr.open("POST", vditor.options.upload.linkToImgUrl);
             if (vditor.options.upload.token) {
                 xhr.setRequestHeader("X-Upload-Token", vditor.options.upload.token);
@@ -1341,7 +1347,7 @@ export const paste = async (vditor: IVditor, event: (ClipboardEvent | DragEvent)
                     }
                 }
             };
-            xhr.send(JSON.stringify({url: src}));
+            xhr.send(JSON.stringify({url: src}));*/
         }
         if (vditor.currentMode === "ir") {
             return [`<span class="vditor-ir__marker vditor-ir__marker--link">${Lute.EscapeHTMLStr(src)}</span>`, Lute.WalkContinue];
